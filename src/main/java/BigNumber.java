@@ -1,6 +1,7 @@
 import java.lang.ArithmeticException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -464,7 +465,21 @@ public final class BigNumber
    public static void main(String[] args)
    {
    
-      doMain(3, 3);
+      //doMain(3, 3);
+   
+      final BigDecimal one = BigDecimal.valueOf(1);
+      final BigDecimal three = BigDecimal.valueOf(3);
+      
+      BigDecimal temp = null;
+      
+      temp = one.divide(three, MathContext.DECIMAL128);
+      System.out.println(temp);
+      
+      temp = temp.divide(BigDecimal.valueOf(2));
+      System.out.println(temp);
+   
+      temp = temp.divide(BigDecimal.valueOf(7));
+      System.out.println(temp);
    
    }
    
