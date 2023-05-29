@@ -1,9 +1,4 @@
-import java.lang.ArithmeticException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /** If you know BigInteger and BigDecimal, think of this as BigFraction. This class is immutable. */
@@ -26,7 +21,7 @@ public final class BigNumber
     * The denominator.
     *
     * Can be any whole number except for zero.
-    * Must always be unsigned.
+    * Must be strictly positive.
     * Cannot be null.
     *
     */
@@ -80,7 +75,7 @@ public final class BigNumber
       Objects.requireNonNull(numerator, "numerator cannot be null");
       Objects.requireNonNull(denominator, "denominator cannot be null");
    
-      if (denominator.intValue() == 0)
+      if (denominator.equals(BigInteger.ZERO))
       {
       
          throw new IllegalArgumentException("denominator cannot be 0");
@@ -145,7 +140,7 @@ public final class BigNumber
    public BigNumber negate()
    {
    
-      return this.multiply(-1);
+      return new BigNumber(this.numerator.negate(), this.denominator);
    
    }
 
@@ -236,7 +231,7 @@ public final class BigNumber
       {
       
          resultNumerator = this.numerator.add(param.getNumerator());
-         resultDenominator = BigInteger.ONE;
+         resultDenominator = this.denominator;
       
       }
       
@@ -272,7 +267,7 @@ public final class BigNumber
    public BigNumber subtract(long param)
    {
    
-      return this.add(new BigNumber(param * -1));
+      return this.add(new BigNumber(param).negate());
    
    }
 
@@ -322,8 +317,8 @@ public final class BigNumber
    
       Objects.requireNonNull(param, "parameter cannot be null");
    
-      BigInteger resultNumerator = this.numerator.multiply(param.numerator);
-      BigInteger resultDenominator = this.denominator.multiply(param.denominator);
+      final BigInteger resultNumerator = this.numerator.multiply(param.numerator);
+      final BigInteger resultDenominator = this.denominator.multiply(param.denominator);
    
       return simplify(resultNumerator, resultDenominator);
    
